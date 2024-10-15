@@ -1,46 +1,60 @@
+// src/index.js
 const express = require('express');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
-const loggerMiddleware = require('./middleware/loggerMiddleware');
-const errorMiddleware = require('./middleware/errorMiddleware');
-const authRoutes = require('./routes/auth');
-const userRoutes = require('./routes/users');
+const cors = require('cors');
+const connectDB = require('./config/db')
 
-// Load environment variables from .env file
+// Load environment variables
 dotenv.config();
 
-// Initialize Express app
+//import routes
+const authRoutes = require('./routes/auth');
+const dashboardRoutes = require('./routes/dashboard');
+const workoutRoutes = require('./routes/workouts')
+const notificationRoutes = require('./routes/notification');
+
+
+//loading the models into the index.js(mains start file)
+require('./models/User');
+require('./models/Workout');
+require('./models/Notification')
+
 const app = express();
 
-// Middleware to parse body data (JSON and URL-encoded data)
+// Middleware
+app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 
-// Logger middleware (logs request info)
-app.use(loggerMiddleware);
+
 
 // MongoDB Connection
-const connectDB = async () => {
-    try {
-        await mongoose.connect(process.env.MONGO_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
-        console.log('MongoDB connected successfully');
-    } catch (err) {
-        console.error('MongoDB connection error:', err.message);
-        process.exit(1); // Exit with failure
-    }
-};
 connectDB();
 
-// Routes
-app.use('/api/auth', authRoutes); // Auth routes
-app.use('/api/users', userRoutes); // User routes
+//routes
+app.use('/api/auth', authRoutes)
+app.use('/api', dashboardRoutes); //use the dashboard routes under /api
+app.use('/api/workouts', workoutRoutes);
+app.use('/api/notifications', notificationRoutes)
 
-// Error handling middleware (must come after the routes)
-app.use(errorMiddleware);
+
+// Test route to validate Day 2 work
+app.get('/test-db', async (req, res) => {
+    try {
+        // Fetching all users, workouts, and notifications from the database
+        const users = await mongoose.model('User').find({});
+        const workouts = await mongoose.model('Workout').find({});
+        const notifications = await mongoose.model('Notification').find({});
+        
+        // Sending the fetched data as a JSON response
+        res.json({ users, workouts, notifications });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 // Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});

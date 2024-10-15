@@ -1,73 +1,72 @@
+// src/controllers/workoutController.js
 const Workout = require('../models/Workout');
 
-// Create a workout
-exports.createWorkout = async (req, res) => {
-  const { userId, dayOfWeek, bodyPart, sets, reps } = req.body;
+// Create a new workout
+const createWorkout = async (req, res) => {
+    const { dayOfWeek, bodyPart, exercises } = req.body;
+    const userId = req.user.id; // Get user ID from middleware
 
-  try {
-    const workout = new Workout({
-      userId,
-      dayOfWeek,
-      bodyPart,
-      sets,
-      reps,
-    });
-
-    await workout.save();
-    res.json(workout);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
+    try {
+        const newWorkout = new Workout({
+            user: userId,
+            dayOfWeek,
+            bodyPart,
+            exercises
+        });
+        
+        await newWorkout.save();
+        res.status(201).json(newWorkout);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
 };
 
-// Get user's workouts
-exports.getUserWorkouts = async (req, res) => {
-  try {
-    const workouts = await Workout.find({ userId: req.params.userId });
-    res.json(workouts);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
+// Get all workouts for a user
+const getWorkouts = async (req, res) => {
+    const userId = req.user.id; // Get user ID from middleware
+
+    try {
+        const workouts = await Workout.find({ user: userId });
+        res.json(workouts);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
 };
 
 // Update a workout
-exports.updateWorkout = async (req, res) => {
-  const { dayOfWeek, bodyPart, sets, reps } = req.body;
+const updateWorkout = async (req, res) => {
+    const { workoutId } = req.params; // Get workout ID from URL parameters
+    const updates = req.body;
 
-  try {
-    const workout = await Workout.findById(req.params.id);
-
-    if (!workout) {
-      return res.status(404).json({ msg: 'Workout not found' });
+    try {
+        const updatedWorkout = await Workout.findByIdAndUpdate(workoutId, updates, { new: true });
+        if (!updatedWorkout) {
+            return res.status(404).json({ message: 'Workout not found' });
+        }
+        res.json(updatedWorkout);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
     }
-
-    workout.dayOfWeek = dayOfWeek || workout.dayOfWeek;
-    workout.bodyPart = bodyPart || workout.bodyPart;
-    workout.sets = sets || workout.sets;
-    workout.reps = reps || workout.reps;
-
-    await workout.save();
-    res.json(workout);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
 };
 
 // Delete a workout
-exports.deleteWorkout = async (req, res) => {
-  try {
-    const workout = await Workout.findById(req.params.id);
-    if (!workout) {
-      return res.status(404).json({ msg: 'Workout not found' });
-    }
+const deleteWorkout = async (req, res) => {
+    const { workoutId } = req.params; // Get workout ID from URL parameters
 
-    await workout.remove();
-    res.json({ msg: 'Workout removed' });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
+    try {
+        const deletedWorkout = await Workout.findByIdAndRemove(workoutId);
+        if (!deletedWorkout) {
+            return res.status(404).json({ message: 'Workout not found' });
+        }
+        res.json({ message: 'Workout deleted' });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+module.exports = {
+    createWorkout,
+    getWorkouts,
+    updateWorkout,
+    deleteWorkout
 };

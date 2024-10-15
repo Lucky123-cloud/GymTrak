@@ -1,0 +1,48 @@
+1. How to delete someone from data base - {
+    either using a script to delete a user from the database
+    or using mongo client to manually delete a client from the database
+};
+
+*******************************************************************************************************
+using the script:
+Lets call the script deleteUser.js:
+After we have specified who we would like to delete, we run the script by writing: 'node deleteUser.js'
+
+const mongoose = require('mongoose');
+const User = require('./src/models/User'); // Adjust the path as needed
+
+// MongoDB connection URI
+const mongoURI = 'your_mongodb_uri'; // Replace with your MongoDB connection URI
+
+const deleteUser = async (email) => {
+    try {
+        // Connect to MongoDB
+        await mongoose.connect(mongoURI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+
+        // Delete user
+        const result = await User.deleteOne({ email: email.toLowerCase() });
+        console.log('User deleted:', result);
+    } catch (err) {
+        console.error(err.message);
+    } finally {
+        // Close the connection
+        mongoose.connection.close();
+    }
+};
+
+// Call the deleteUser function with the email you want to delete
+deleteUser("johndoe@example.com");
+*********************************************************************************************
+
+Using the mongo client directly:(from the terminal)
+1. Start the MongoDB shell by running:
+    mongo
+
+2. Select your database (replace your_database_name with your actual database name):
+    use your_database_name
+
+3. Run the delete query:
+    db.users.deleteOne({ email: "johndoe@example.com" });

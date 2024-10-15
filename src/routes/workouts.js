@@ -1,26 +1,23 @@
+// src/routes/workout.js
 const express = require('express');
+const { createWorkout, getWorkouts, updateWorkout, deleteWorkout } = require('../controllers/workoutController');
+const authMiddleware = require('../middleware/authMiddleware');
+
 const router = express.Router();
-const { createWorkout, getUserWorkouts, updateWorkout, deleteWorkout } = require('../controllers/workoutController');
-const auth = require('../middleware/authMiddleware');
 
-// @route   POST /api/workouts
-// @desc    Create a new workout
-// @access  Private
-router.post('/', auth, createWorkout);
+// Protect the workout routes with authentication middleware
+router.use(authMiddleware);
 
-// @route   GET /api/workouts/:userId
-// @desc    Get user's workouts
-// @access  Private
-router.get('/:userId', auth, getUserWorkouts);
+// Create a new workout
+router.post('/', createWorkout);
 
-// @route   PUT /api/workouts/:id
-// @desc    Update a workout
-// @access  Private
-router.put('/:id', auth, updateWorkout);
+// Get all workouts
+router.get('/', getWorkouts);
 
-// @route   DELETE /api/workouts/:id
-// @desc    Delete a workout
-// @access  Private
-router.delete('/:id', auth, deleteWorkout);
+// Update a workout
+router.put('/:workoutId', updateWorkout);
+
+// Delete a workout
+router.delete('/:workoutId', deleteWorkout);
 
 module.exports = router;

@@ -1,0 +1,72 @@
+Day 3: User Authentication
+1. User Registration (Sign Up)
+Route: POST /api/auth/register
+Request Body (JSON):
+json
+Copy code
+{
+  "name": "John Doe",
+  "email": "johndoe@example.com",
+  "password": "password123"
+}
+Expected Response: If the registration is successful, you will receive a JSON Web Token (JWT) in the response.
+json
+Copy code
+{
+  "token": "your_jwt_token_here"
+}
+2. User Login
+Route: POST /api/auth/login
+Request Body (JSON):
+json
+Copy code
+{
+  "email": "johndoe@example.com",
+  "password": "password123"
+}
+Expected Response: If the login is successful, you will also receive a JWT token that you will use for authenticated requests.
+json
+Copy code
+{
+  "token": "your_jwt_token_here"
+}
+Step-by-Step Guide for Postman Testing
+1. User Registration (Sign Up)
+Open Postman and create a new request.
+Set the method to POST and use the URL: http://localhost:5000/api/auth/register.
+In the Body tab, select raw and set the type to JSON.
+Add the following JSON body:
+json
+Copy code
+{
+  "name": "John Doe",
+  "email": "johndoe@example.com",
+  "password": "password123"
+}
+Hit Send.
+Expected Outcome: You should get a response with a JWT token in the body:
+
+json
+Copy code
+{
+  "token": "your_jwt_token_here"
+}
+2. User Login
+Open Postman and create a new request.
+Set the method to POST and use the URL: http://localhost:5000/api/auth/login.
+In the Body tab, select raw and set the type to JSON.
+Add the following JSON body:
+json
+Copy code
+{
+  "email": "johndoe@example.com",
+  "password": "password123"
+}
+Hit Send.
+Expected Outcome: You should get a response with a JWT token:
+
+json
+Copy code
+{
+  "token": "your_jwt_token_here"
+}

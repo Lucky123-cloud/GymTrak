@@ -16,6 +16,7 @@ const workoutRoutes = require('./routes/workouts')
 const notificationRoutes = require('./routes/notification');
 const adminRoutes = require('./routes/admin');
 const testRoutes = require('./routes/test'); // Import the test routes
+const userRoutes = require('./routes/users');
 
 
 
@@ -43,6 +44,7 @@ app.use('/api/workouts', workoutRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api', testRoutes);
+app.use('/api/users', userRoutes);
 
 // Test route to validate Day 2 work
 app.get('/test-db', async (req, res) => {

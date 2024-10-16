@@ -1,0 +1,59 @@
+Open Postman: Start Postman and create a new request or open an existing one.
+
+Select HTTP Method and URL:
+
+Choose the HTTP method you want to test (e.g., GET, POST, etc.).
+Enter the URL of the API endpoint. For example, if you want to access the user info endpoint:
+bash
+Copy code
+http://localhost:5000/api/users/me
+Set the Authorization Header:
+
+Click on the Headers tab (just below the URL bar).
+
+You will see a key-value pair table where you can add headers.
+
+Add a new header:
+
+In the Key field, enter:
+sql
+Copy code
+Authorization
+In the Value field, enter:
+php
+Copy code
+Bearer <your_token>
+Replace <your_token> with the actual JWT token you received during login.
+Here’s what it should look like in Postman:
+
+Key	Value
+Authorization	Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type	application/json
+Add Content-Type Header:
+
+Optionally, you can also add the Content-Type header if your request body requires it (for example, if you are sending JSON data).
+In the Key field, enter:
+css
+Copy code
+Content-Type
+In the Value field, enter:
+bash
+Copy code
+application/json
+Send the Request:
+
+Once you have set the headers, click the Send button to send the request.
+Example Scenario
+Assuming you logged in and received the following token:
+
+Copy code
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWM1MjRhYmU5NzA4MjY2ZTFiNWI0NmMiLCJpYXQiOjE2MzkwODg0NzcsImV4cCI6MTYzOTA4OTA3N30.VZ4Z6nwbjNOvAVgKrE3Cylk8GBTFGryKMDDdQhpZwbA
+You will set your headers like this:
+
+Key	Value
+Authorization	Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWM1MjRhYmU5NzA4MjY2ZTFiNWI0NmMiLCJpYXQiOjE2MzkwODg0NzcsImV4cCI6MTYzOTA4OTA3N30.VZ4Z6nwbjNOvAVgKrE3Cylk8GBTFGryKMDDdQhpZwbA
+Content-Type	application/json
+Common Errors to Avoid
+Ensure no extra spaces in the Authorization header.
+Make sure the token is active (not expired) and correctly formatted.
+If you see an error regarding the token, double-check the token's validity.

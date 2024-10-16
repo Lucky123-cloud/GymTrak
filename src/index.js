@@ -13,6 +13,7 @@ const authRoutes = require('./routes/auth');
 const dashboardRoutes = require('./routes/dashboard');
 const workoutRoutes = require('./routes/workouts')
 const notificationRoutes = require('./routes/notification');
+const adminRoutes = require('./routes/admin');
 
 
 //loading the models into the index.js(mains start file)
@@ -35,8 +36,8 @@ connectDB();
 app.use('/api/auth', authRoutes)
 app.use('/api', dashboardRoutes); //use the dashboard routes under /api
 app.use('/api/workouts', workoutRoutes);
-app.use('/api/notifications', notificationRoutes)
-
+app.use('/api/notifications', notificationRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Test route to validate Day 2 work
 app.get('/test-db', async (req, res) => {

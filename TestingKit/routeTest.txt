@@ -1,0 +1,16 @@
+day one testing
+
+
+Test Route
+Method: GET
+
+URL: http://localhost:5000/api/test
+
+Expected Response:
+
+json
+Copy code
+{
+  "message": "Test route working!"
+}
+Browser: You can access this directly by opening your browser and visiting http://localhost:5000/api/test. You should see the message "Test route working!" in the browser

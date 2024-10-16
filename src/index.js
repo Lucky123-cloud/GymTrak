@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const connectDB = require('./config/db')
+const bodyParser = require('body-parser')
 
 // Load environment variables
 dotenv.config();
@@ -14,6 +15,8 @@ const dashboardRoutes = require('./routes/dashboard');
 const workoutRoutes = require('./routes/workouts')
 const notificationRoutes = require('./routes/notification');
 const adminRoutes = require('./routes/admin');
+const testRoutes = require('./routes/test'); // Import the test routes
+
 
 
 //loading the models into the index.js(mains start file)
@@ -26,6 +29,7 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(bodyParser.json())
 
 
 
@@ -38,6 +42,7 @@ app.use('/api', dashboardRoutes); //use the dashboard routes under /api
 app.use('/api/workouts', workoutRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api', testRoutes);
 
 // Test route to validate Day 2 work
 app.get('/test-db', async (req, res) => {

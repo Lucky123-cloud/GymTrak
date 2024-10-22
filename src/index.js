@@ -3,65 +3,74 @@ const express = require('express');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const connectDB = require('./config/db')
-const bodyParser = require('body-parser')
+const path = require('path');
 
 // Load environment variables
 dotenv.config();
 
-//import routes
+// Import routes
 const authRoutes = require('./routes/auth');
 const dashboardRoutes = require('./routes/dashboard');
-const workoutRoutes = require('./routes/workouts')
-const notificationRoutes = require('./routes/notification');
+const workoutRoutes = require('./routes/workouts');
+const notificationRoutes = require('./routes/notifications');
 const adminRoutes = require('./routes/admin');
-const testRoutes = require('./routes/test'); // Import the test routes
 const userRoutes = require('./routes/users');
 
-
-
-//loading the models into the index.js(mains start file)
-require('./models/User');
-require('./models/Workout');
-require('./models/Notification')
+// Connect to MongoDB
+const connectDB = require('./config/db');
+connectDB();
 
 const app = express();
 
 // Middleware
-app.use(cors());
-app.use(express.json());
-app.use(bodyParser.json())
+app.use(cors({
+    origin: '*', // Allow all origins for development; restrict in production
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
+}));
+app.use(express.json()); // Use express's built-in body parser
+app.use(express.urlencoded({ extended: true }));
 
+// Serve static frontend files
+app.use(express.static(path.join(__dirname, '../frontend')));
 
-
-// MongoDB Connection
-connectDB();
-
-//routes
-app.use('/api/auth', authRoutes)
-app.use('/api', dashboardRoutes); //use the dashboard routes under /api
+// Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/workouts', workoutRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/admin', adminRoutes);
-app.use('/api', testRoutes);
 app.use('/api/users', userRoutes);
 
-// Test route to validate Day 2 work
+// Default route for the login page (frontend)
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
+});
+
+// Test route for MongoDB connection
 app.get('/test-db', async (req, res) => {
     try {
-        // Fetching all users, workouts, and notifications from the database
         const users = await mongoose.model('User').find({});
         const workouts = await mongoose.model('Workout').find({});
         const notifications = await mongoose.model('Notification').find({});
-        
-        // Sending the fetched data as a JSON response
         res.json({ users, workouts, notifications });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
 
-// Start server
+// Handle 404 for undefined routes
+app.use((req, res, next) => {
+    res.status(404).json({ message: 'Not Found' });
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ message: 'Server Error' });
+});
+
+// Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

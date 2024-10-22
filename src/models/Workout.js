@@ -1,4 +1,3 @@
-// src/models/Workout.js
 const mongoose = require('mongoose');
 
 const WorkoutSchema = new mongoose.Schema({
@@ -7,22 +6,14 @@ const WorkoutSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
-    dayOfWeek: {
-        type: String,
-        enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    date: {
+        type: Date,
         required: true
     },
-    bodyPart: {
+    details: {
         type: String,
-        enum: ['Lower body', 'Upper body', 'Legs', 'Arms', 'Back', 'Chest'],
         required: true
-    },
-    exercises: [{
-        name: String,
-        sets: Number,
-        reps: String,
-        rest: String
-    }]
+    }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Workout', WorkoutSchema);

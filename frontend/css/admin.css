@@ -1,0 +1,72 @@
+/* Dark mode default */
+body {
+    background-color: #121212;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    max-width: 500px; /* Reduced width */
+    margin: 0 auto;
+    padding: 15px; /* Reduced padding */
+    background-color: #1e1e1e;
+    border-radius: 8px;
+}
+
+h1, h2 {
+    color: #ffffff;
+    font-size: 1.5em; /* Slightly smaller headings */
+}
+
+button {
+    background-color: #6200ea;
+    color: white;
+    padding: 8px; /* Reduced button size */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #3700b3;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 8px; /* Reduced input padding */
+    margin: 8px 0; /* Reduced margin */
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+input[type="date"], textarea {
+    background-color: #333;
+    color: white;
+}
+
+#userInfo {
+    margin-top: 8px; /* Reduced spacing */
+    padding: 8px; /* Reduced padding */
+    background-color: #333;
+    border-radius: 4px;
+    font-size: 0.9em; /* Smaller text */
+}
+
+form {
+    margin-bottom: 15px; /* Reduced space between forms */
+}
+
+/* Light mode */
+body.light-mode {
+    background-color: #f0f0f0;
+    color: #000000;
+}
+
+.container.light-mode {
+    background-color: #ffffff;
+}
+
+input.light-mode, select.light-mode, textarea.light-mode {
+    background-color: #fff;
+    color: #000;
+}

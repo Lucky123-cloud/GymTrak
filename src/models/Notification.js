@@ -1,4 +1,3 @@
-// src/models/Notification.js
 const mongoose = require('mongoose');
 
 const NotificationSchema = new mongoose.Schema({
@@ -9,7 +8,7 @@ const NotificationSchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        enum: ['workout', 'payment', 'hydration'],
+        enum: ['workout', 'payment', 'hydration', 'general', 'info', 'alert', 'reminder'],  // Added more types for flexibility
         required: true
     },
     message: {

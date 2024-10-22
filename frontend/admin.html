@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/admin.css">
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <div class="container">
+        <h1 id="adminWelcome">Welcome back, {user.admin}</h1>
+        <button onclick="logout()">Logout</button>
+        
+        <h2>Search User</h2>
+        <input type="text" id="searchUserEmail" placeholder="Enter user email" />
+        <button type="button" onclick="searchUser()">Search</button>
+        <div id="userInfo"></div>
+
+        <h2>Send Notifications</h2>
+        <form onsubmit="sendNotification(event)">
+            <label for="notificationMessage">Message:</label>
+            <textarea id="notificationMessage" required></textarea>
+            <label for="notificationType">Notification Type:</label>
+            <select id="notificationType">
+                <option value="workout">Workout</option>
+                <option value="payment">Payment</option>
+                <option value="hydration">Hydration</option>
+            </select>
+            <button type="submit">Send to All</button>
+        </form>
+
+        <h2>Send Workout Notifications</h2>
+        <form onsubmit="sendWorkoutNotification(event)">
+            <label for="workoutDetails">Workout Details:</label>
+            <textarea id="workoutDetails" required></textarea>
+            <button type="submit">Send to All</button>
+        </form>
+        
+        
+
+        <h2>Change Subscription</h2>
+        <form onsubmit="changeSubscription(event)">
+            <input type="hidden" id="subscriptionUserId" />
+            <label for="subscriptionStatus">Subscription Status:</label>
+            <select id="subscriptionStatus">
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+            </select>
+            <label for="subscriptionType">Subscription Type:</label>
+            <select id="subscriptionType">
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+                <option value="daily">Daily</option>
+            </select>
+            <button type="submit">Change Subscription</button>
+        </form>
+    </div>
+
+    <script src="js/admin-script.js"></script>
+</body>
+</html>

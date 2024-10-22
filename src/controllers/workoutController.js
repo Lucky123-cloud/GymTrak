@@ -1,22 +1,21 @@
-// src/controllers/workoutController.js
 const Workout = require('../models/Workout');
 
 // Create a new workout
 const createWorkout = async (req, res) => {
-    const { dayOfWeek, bodyPart, exercises } = req.body;
+    const { date, details } = req.body;
     const userId = req.user.id; // Get user ID from middleware
 
     try {
         const newWorkout = new Workout({
             user: userId,
-            dayOfWeek,
-            bodyPart,
-            exercises
+            date,
+            details
         });
         
         await newWorkout.save();
         res.status(201).json(newWorkout);
     } catch (error) {
+        console.error("Error creating workout:", error);
         res.status(500).json({ message: 'Server error' });
     }
 };
@@ -29,29 +28,31 @@ const getWorkouts = async (req, res) => {
         const workouts = await Workout.find({ user: userId });
         res.json(workouts);
     } catch (error) {
+        console.error("Error fetching workouts:", error);
         res.status(500).json({ message: 'Server error' });
     }
 };
 
 // Update a workout
 const updateWorkout = async (req, res) => {
-    const { workoutId } = req.params; // Get workout ID from URL parameters
-    const updates = req.body;
+    const { workoutId } = req.params;
+    const { date, details } = req.body;
 
     try {
-        const updatedWorkout = await Workout.findByIdAndUpdate(workoutId, updates, { new: true });
+        const updatedWorkout = await Workout.findByIdAndUpdate(workoutId, { date, details }, { new: true });
         if (!updatedWorkout) {
             return res.status(404).json({ message: 'Workout not found' });
         }
         res.json(updatedWorkout);
     } catch (error) {
+        console.error("Error updating workout:", error);
         res.status(500).json({ message: 'Server error' });
     }
 };
 
 // Delete a workout
 const deleteWorkout = async (req, res) => {
-    const { workoutId } = req.params; // Get workout ID from URL parameters
+    const { workoutId } = req.params;
 
     try {
         const deletedWorkout = await Workout.findByIdAndRemove(workoutId);
@@ -60,6 +61,7 @@ const deleteWorkout = async (req, res) => {
         }
         res.json({ message: 'Workout deleted' });
     } catch (error) {
+        console.error("Error deleting workout:", error);
         res.status(500).json({ message: 'Server error' });
     }
 };

@@ -1,4 +1,3 @@
-// src/routes/workout.js
 const express = require('express');
 const { createWorkout, getWorkouts, updateWorkout, deleteWorkout } = require('../controllers/workoutController');
 const authMiddleware = require('../middleware/authMiddleware');
@@ -11,7 +10,7 @@ router.use(authMiddleware);
 // Create a new workout
 router.post('/', createWorkout);
 
-// Get all workouts
+// Get all workouts (for clients or admin viewing users' workouts)
 router.get('/', getWorkouts);
 
 // Update a workout

@@ -1,31 +1,37 @@
-// src/middleware/adminAuth.js
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');  // Assuming you have a User model
+const User = require('../models/User');
 
-const adminAuth = async (req, res, next) => {
-    // Get token from header
-    const token = req.header('x-auth-token');
+// Admin authentication middleware
+module.exports = (req, res, next) => {
+    // Log the authorization header for debugging
+    console.log('Authorization Header:', req.header('Authorization'));
 
-    // Check if no token
+    // Get the token from the Authorization header
+    const token = req.header('Authorization') ? req.header('Authorization').replace('Bearer ', '') : null;
+    
+    // Log the extracted token
+    console.log('Token:', token);
+
     if (!token) {
         return res.status(401).json({ message: 'No token, authorization denied' });
     }
 
     try {
-        // Verify token
+        // Verify the token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded;
 
-        // Check if user is an admin
-        const user = await User.findById(req.user.id);
-        if (user.role !== 'admin') {
-            return res.status(403).json({ message: 'Access denied. Admins only.' });
+        // Log decoded token
+        console.log('Decoded Token:', decoded);
+
+        if (decoded.role !== 'admin') {
+            return res.status(403).json({ message: 'Access denied. Not an admin.' });
         }
 
+        req.user = decoded; // Store user info in request object
         next();
-    } catch (err) {
-        res.status(401).json({ message: 'Token is not valid' });
+    } catch (error) {
+        // Log any errors during token verification
+        console.error("Error verifying token:", error);
+        res.status(401).json({ message: 'Invalid token' });
     }
 };
-
-module.exports = adminAuth;

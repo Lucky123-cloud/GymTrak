@@ -1,4 +1,4 @@
-![Lucky Baraka — Backend Engineer](https://github.com/Lucky123-cloud/Lucky123-cloud/blob/main/Lucky_Banner.png)
+![Lucky Baraka — Backend Engineer](https://github.com/Lucky123-cloud/GymTrak/blob/master/gymTrak_Sys_design.png)
 # GymTrak
 
 GymTrak is a comprehensive gym management application designed for both gym members and admins. It allows users to track their workout schedules, receive notifications, and stay updated on gym events and promotions. Admins can manage members, send notifications, update news feeds, and generate reports on gym activities.
